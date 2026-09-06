@@ -1,0 +1,28 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+  push:
+
+jobs:
+  build:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install vcpkg dependencies
+        run: vcpkg install sdl2:x64-windows
+      - name: Configure
+        run: cmake -S . -B build -A x64 -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
+      - name: Build
+        run: cmake --build build --config Release
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force package | Out-Null
+          Copy-Item build/Release/PaintOpenGL.exe package/PaintOpenGL.exe
+          Copy-Item C:/vcpkg/installed/x64-windows/bin/SDL2.dll package/SDL2.dll
+          Copy-Item README.md package/README.md
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PaintOpenGL-Windows-x64
+          path: package
