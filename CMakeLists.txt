@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(PaintOpenGL WIN32 src/main.cpp)
 
+aif(FALSE)
+endif()
+
 if(WIN32)
     set(VCPKG_ROOT "C:/vcpkg")
     set(SDL2_ROOT "${VCPKG_ROOT}/installed/x64-windows")
@@ -25,6 +28,7 @@ if(WIN32)
     endif()
 
     target_include_directories(PaintOpenGL PRIVATE "${SDL2_INCLUDE_DIR}")
+    target_compile_definitions(PaintOpenGL PRIVATE SDL_MAIN_HANDLED)
     target_link_libraries(PaintOpenGL PRIVATE "${SDL2_LIBRARY}" opengl32)
 
 elseif(UNIX)
