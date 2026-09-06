@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install vcpkg dependencies
-        run: vcpkg install sdl2:x64-windows
+        run: vcpkg install --triplet x64-windows
       - name: Configure
         run: cmake -S . -B build -A x64 -DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake
       - name: Build
